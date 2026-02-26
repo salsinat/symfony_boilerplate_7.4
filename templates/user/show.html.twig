@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ user.firstname }} {{ user.lastname }}{% endblock %}
+{% block page_title %}Détails Utilisateur{% endblock %}
+{% block page_subtitle %}Consulter les informations{% endblock %}
+
+{% block body %}
+<div class="max-w-2xl mx-auto">
+    <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-slate-200/50 overflow-hidden">
+        <!-- Header with avatar -->
+        <div class="px-8 py-8 bg-gradient-to-r from-purple-500 to-pink-500 text-white">
+            <div class="flex items-center">
+                <div class="w-20 h-20 bg-white/20 backdrop-blur rounded-2xl flex items-center justify-center text-white font-bold text-2xl shadow-lg mr-6">
+                    {{ user.firstname|first|upper }}{{ user.lastname|first|upper }}
+                </div>
+                <div>
+                    <h2 class="text-2xl font-bold">{{ user.firstname }} {{ user.lastname }}</h2>
+                    <p class="text-purple-100 mt-1">{{ user.email }}</p>
+                    <div class="flex gap-2 mt-3">
+                        {% for role in user.roles %}
+                            {% if role == 'ROLE_ADMIN' %}
+                                <span class="px-3 py-1 bg-white/20 backdrop-blur rounded-lg text-sm font-semibold">Admin</span>
+                            {% elseif role == 'ROLE_MANAGER' %}
+                                <span class="px-3 py-1 bg-white/20 backdrop-blur rounded-lg text-sm font-semibold">Manager</span>
+                            {% else %}
+                                <span class="px-3 py-1 bg-white/20 backdrop-blur rounded-lg text-sm font-semibold">User</span>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Details -->
+        <div class="p-8">
+            <dl class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-slate-50 rounded-xl p-4">
+                    <dt class="text-sm font-medium text-slate-500">ID</dt>
+                    <dd class="mt-1 text-lg font-semibold text-slate-800">#{{ user.id }}</dd>
+                </div>
+                <div class="bg-slate-50 rounded-xl p-4">
+                    <dt class="text-sm font-medium text-slate-500">Email</dt>
+                    <dd class="mt-1 text-lg font-semibold text-slate-800">{{ user.email }}</dd>
+                </div>
+                <div class="bg-slate-50 rounded-xl p-4">
+                    <dt class="text-sm font-medium text-slate-500">Prénom</dt>
+                    <dd class="mt-1 text-lg font-semibold text-slate-800">{{ user.firstname }}</dd>
+                </div>
+                <div class="bg-slate-50 rounded-xl p-4">
+                    <dt class="text-sm font-medium text-slate-500">Nom</dt>
+                    <dd class="mt-1 text-lg font-semibold text-slate-800">{{ user.lastname }}</dd>
+                </div>
+            </dl>
+        </div>
+
+        <!-- Actions -->
+        <div class="px-8 py-6 bg-slate-50/50 border-t border-slate-200/50 flex justify-between">
+            <a href="{{ path('app_user_index') }}" class="inline-flex items-center text-slate-600 hover:text-slate-800 font-medium">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Retour à la liste
+            </a>
+            <a href="{{ path('app_user_edit', {'id': user.id}) }}" class="inline-flex items-center px-5 py-2.5 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                </svg>
+                Modifier
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

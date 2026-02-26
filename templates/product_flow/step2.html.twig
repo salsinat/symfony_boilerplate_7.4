@@ -1,0 +1,88 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau Produit - Étape 2{% endblock %}
+{% block page_title %}Nouveau Produit{% endblock %}
+{% block page_subtitle %}Assistant de création multi-étapes{% endblock %}
+
+{% block body %}
+<div class="max-w-3xl mx-auto">
+    <!-- Step Indicator -->
+    <div class="mb-8">
+        <div class="flex items-center justify-center">
+            <div class="flex items-center">
+                <div class="w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center text-white font-bold">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                </div>
+                <div class="w-20 h-1 bg-emerald-500"></div>
+            </div>
+            <div class="flex items-center">
+                <div class="w-10 h-10 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full flex items-center justify-center text-white font-bold shadow-lg shadow-blue-500/30">2</div>
+                <div class="w-20 h-1 bg-slate-200"></div>
+            </div>
+            <div class="flex items-center">
+                <div class="w-10 h-10 bg-slate-200 rounded-full flex items-center justify-center text-slate-400 font-bold">3</div>
+                <div class="w-20 h-1 bg-slate-200"></div>
+            </div>
+            <div>
+                <div class="w-10 h-10 bg-slate-200 rounded-full flex items-center justify-center text-slate-400 font-bold">4</div>
+            </div>
+        </div>
+        <div class="flex justify-center mt-4 space-x-12 text-xs">
+            <span class="text-emerald-600">Type ✓</span>
+            <span class="text-blue-600 font-semibold">Détails</span>
+            <span class="text-slate-400">Spécifiques</span>
+            <span class="text-slate-400">Confirmation</span>
+        </div>
+    </div>
+
+    <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-slate-200/50 overflow-hidden">
+        <div class="px-8 py-6 border-b border-slate-200/50 bg-gradient-to-r from-blue-50 to-indigo-50">
+            <h2 class="text-xl font-bold text-slate-800">Informations du produit</h2>
+            <p class="text-sm text-slate-500 mt-1">Renseignez les détails de base</p>
+        </div>
+
+        <div class="p-8">
+            {{ form_start(form, {'attr': {'class': 'space-y-6'}}) }}
+                
+                <div>
+                    {{ form_label(form.name, 'Nom du produit', {'label_attr': {'class': 'block text-sm font-semibold text-slate-700 mb-2'}}) }}
+                    {{ form_widget(form.name, {'attr': {'class': 'w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors bg-white/50', 'placeholder': 'Ex: Smartphone Galaxy S24'}}) }}
+                    {{ form_errors(form.name) }}
+                </div>
+
+                <div>
+                    {{ form_label(form.description, 'Description', {'label_attr': {'class': 'block text-sm font-semibold text-slate-700 mb-2'}}) }}
+                    {{ form_widget(form.description, {'attr': {'class': 'w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors bg-white/50', 'rows': 4, 'placeholder': 'Décrivez le produit en détail...'}}) }}
+                    {{ form_errors(form.description) }}
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        {{ form_label(form.price, 'Prix', {'label_attr': {'class': 'block text-sm font-semibold text-slate-700 mb-2'}}) }}
+                        {{ form_widget(form.price, {'attr': {'class': 'w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors bg-white/50', 'placeholder': '99.99'}}) }}
+                        {{ form_errors(form.price) }}
+                    </div>
+                    <div>
+                        {{ form_label(form.stock, 'Stock initial', {'label_attr': {'class': 'block text-sm font-semibold text-slate-700 mb-2'}}) }}
+                        {{ form_widget(form.stock, {'attr': {'class': 'w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors bg-white/50', 'placeholder': '100'}}) }}
+                        {{ form_errors(form.stock) }}
+                    </div>
+                </div>
+
+                <div class="flex justify-between pt-6 border-t border-slate-200">
+                    <a href="{{ path('product_flow_start') }}" class="inline-flex items-center px-4 py-2 text-slate-600 hover:text-slate-800 font-medium">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                        </svg>
+                        Retour
+                    </a>
+                    {{ form_widget(form.next, {'attr': {'class': 'inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-xl shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all hover:-translate-y-0.5'}}) }}
+                </div>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+{% endblock %}

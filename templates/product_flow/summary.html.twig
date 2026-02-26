@@ -1,0 +1,135 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau Produit - Confirmation{% endblock %}
+{% block page_title %}Nouveau Produit{% endblock %}
+{% block page_subtitle %}Assistant de création multi-étapes{% endblock %}
+
+{% block body %}
+<div class="max-w-3xl mx-auto">
+    <!-- Step Indicator -->
+    <div class="mb-8">
+        <div class="flex items-center justify-center">
+            <div class="flex items-center">
+                <div class="w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center text-white font-bold">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                </div>
+                <div class="w-20 h-1 bg-emerald-500"></div>
+            </div>
+            <div class="flex items-center">
+                <div class="w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center text-white font-bold">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                </div>
+                <div class="w-20 h-1 bg-emerald-500"></div>
+            </div>
+            <div class="flex items-center">
+                <div class="w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center text-white font-bold">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                </div>
+                <div class="w-20 h-1 bg-emerald-500"></div>
+            </div>
+            <div>
+                <div class="w-10 h-10 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full flex items-center justify-center text-white font-bold shadow-lg shadow-blue-500/30">4</div>
+            </div>
+        </div>
+        <div class="flex justify-center mt-4 space-x-12 text-xs">
+            <span class="text-emerald-600">Type ✓</span>
+            <span class="text-emerald-600">Détails ✓</span>
+            <span class="text-emerald-600">Spécifiques ✓</span>
+            <span class="text-blue-600 font-semibold">Confirmation</span>
+        </div>
+    </div>
+
+    <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-slate-200/50 overflow-hidden">
+        <div class="px-8 py-6 border-b border-slate-200/50 bg-gradient-to-r from-amber-50 to-orange-50">
+            <h2 class="text-xl font-bold text-slate-800">Vérifiez les informations</h2>
+            <p class="text-sm text-slate-500 mt-1">Confirmez que tout est correct avant de créer le produit</p>
+        </div>
+
+        <div class="p-8">
+            <!-- Type Badge -->
+            <div class="mb-6">
+                {% if type == 'physical' %}
+                    <span class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-xl font-semibold shadow-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                        </svg>
+                        Produit Physique
+                    </span>
+                {% else %}
+                    <span class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-violet-500 to-purple-500 text-white rounded-xl font-semibold shadow-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        Produit Numérique
+                    </span>
+                {% endif %}
+            </div>
+
+            <!-- Details Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div class="bg-slate-50 rounded-xl p-6">
+                    <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-4">Informations</h3>
+                    <div class="space-y-3">
+                        <div>
+                            <p class="text-sm text-slate-500">Nom</p>
+                            <p class="text-lg font-bold text-slate-800">{{ details.name }}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-slate-500">Description</p>
+                            <p class="text-slate-700">{{ details.description }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="bg-blue-50 rounded-xl p-6">
+                        <h3 class="text-xs font-bold text-blue-600 uppercase tracking-wider mb-2">Prix</h3>
+                        <p class="text-3xl font-bold text-blue-600">{{ (details.price / 100)|number_format(2, ',', ' ') }} €</p>
+                    </div>
+                    <div class="bg-slate-50 rounded-xl p-6">
+                        <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Stock initial</h3>
+                        <p class="text-2xl font-bold text-slate-800">{{ details.stock }} unités</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Specifics -->
+            <div class="mb-8 {{ type == 'physical' ? 'bg-emerald-50' : 'bg-violet-50' }} rounded-xl p-6">
+                <h3 class="text-xs font-bold {{ type == 'physical' ? 'text-emerald-600' : 'text-violet-600' }} uppercase tracking-wider mb-2">
+                    {{ type == 'physical' ? 'Logistique' : 'Licence' }}
+                </h3>
+                {% if type == 'physical' %}
+                    <p class="text-lg">Poids : <span class="font-bold text-emerald-700">{{ specifics.weight }} kg</span></p>
+                {% else %}
+                    <p class="font-mono text-sm bg-white/50 p-3 rounded-lg mt-2 break-all text-violet-800">{{ specifics.licenceKey }}</p>
+                {% endif %}
+            </div>
+
+            <!-- Actions -->
+            <div class="flex justify-between pt-6 border-t border-slate-200">
+                <a href="{{ path('product_flow_specifics') }}" class="inline-flex items-center px-4 py-2 text-slate-600 hover:text-slate-800 font-medium">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    </svg>
+                    Retour
+                </a>
+                
+                {{ form_start(form) }}
+                    <button type="submit" class="inline-flex items-center px-8 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold rounded-xl shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 transition-all hover:-translate-y-0.5">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                        Créer le produit
+                    </button>
+                {{ form_end(form, {'render_rest': false}) }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

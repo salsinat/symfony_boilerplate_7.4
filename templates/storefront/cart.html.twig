@@ -1,0 +1,109 @@
+{% extends 'storefront/base.html.twig' %}
+
+{% block title %}Panier - E-Shop{% endblock %}
+
+{% block body %}
+<h1 class="text-3xl font-bold text-slate-800 dark:text-white mb-8">Mon Panier</h1>
+
+{% if cart|length > 0 %}
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Cart Items -->
+        <div class="lg:col-span-2 space-y-4">
+            {% for id, item in cart %}
+                <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 p-6 flex items-center gap-6">
+                    <!-- Image -->
+                    <div class="w-24 h-24 bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                        {% if item.image %}
+                            <img src="{{ item.image }}" alt="{{ item.name }}" class="w-full h-full object-cover rounded-xl">
+                        {% else %}
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-slate-400 dark:text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                            </svg>
+                        {% endif %}
+                    </div>
+
+                    <!-- Info -->
+                    <div class="flex-1">
+                        <a href="{{ path('app_storefront_product', {'slug': item.slug}) }}" class="font-semibold text-slate-800 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+                            {{ item.name }}
+                        </a>
+                        <div class="text-indigo-600 dark:text-indigo-400 font-bold mt-1">{{ (item.price / 100)|number_format(2, ',', ' ') }} €</div>
+                    </div>
+
+                    <!-- Quantity -->
+                    <form action="{{ path('app_cart_update', {'id': id}) }}" method="post" class="flex items-center gap-2">
+                        <input type="number" name="quantity" value="{{ item.quantity }}" min="1" max="99" 
+                               class="w-20 px-3 py-2 border border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-xl text-center focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                               onchange="this.form.submit()">
+                    </form>
+
+                    <!-- Subtotal -->
+                    <div class="text-right">
+                        <div class="text-sm text-slate-500 dark:text-slate-400">Sous-total</div>
+                        <div class="font-bold text-slate-800 dark:text-white">{{ ((item.price * item.quantity) / 100)|number_format(2, ',', ' ') }} €</div>
+                    </div>
+
+                    <!-- Remove -->
+                    <form action="{{ path('app_cart_remove', {'id': id}) }}" method="post">
+                        <button type="submit" class="p-2 text-slate-400 hover:text-red-500 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+            {% endfor %}
+
+            <form action="{{ path('app_cart_clear') }}" method="post" class="text-right pt-4">
+                <button type="submit" class="text-sm text-slate-500 dark:text-slate-400 hover:text-red-500 transition-colors">
+                    Vider le panier
+                </button>
+            </form>
+        </div>
+
+        <!-- Summary -->
+        <div class="lg:col-span-1">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 p-6 sticky top-24">
+                <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-6">Récapitulatif</h2>
+
+                <div class="space-y-4 mb-6">
+                    <div class="flex justify-between text-slate-600 dark:text-slate-300">
+                        <span>Sous-total</span>
+                        <span>{{ (total / 100)|number_format(2, ',', ' ') }} €</span>
+                    </div>
+                    <div class="flex justify-between text-slate-600 dark:text-slate-300">
+                        <span>Livraison</span>
+                        <span class="text-emerald-600 dark:text-emerald-400">Gratuite</span>
+                    </div>
+                </div>
+
+                <div class="border-t border-slate-200 dark:border-slate-600 pt-4 mb-6">
+                    <div class="flex justify-between text-xl font-bold text-slate-800 dark:text-white">
+                        <span>Total</span>
+                        <span>{{ (total / 100)|number_format(2, ',', ' ') }} €</span>
+                    </div>
+                </div>
+
+                <a href="{{ path('app_checkout') }}" class="w-full inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold rounded-xl shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/50 transition-all hover:-translate-y-1">
+                    Passer commande
+                </a>
+
+                <a href="{{ path('app_storefront_catalog') }}" class="block text-center mt-4 text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+                    Continuer mes achats
+                </a>
+            </div>
+        </div>
+    </div>
+{% else %}
+    <div class="text-center py-16">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 text-slate-300 dark:text-slate-600 mx-auto mb-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+        </svg>
+        <h2 class="text-2xl font-bold text-slate-800 dark:text-white mb-2">Votre panier est vide</h2>
+        <p class="text-slate-500 dark:text-slate-400 mb-8">Ajoutez des produits à votre panier pour commencer vos achats.</p>
+        <a href="{{ path('app_storefront_catalog') }}" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-xl shadow-lg">
+            Voir le catalogue
+        </a>
+    </div>
+{% endif %}
+{% endblock %}

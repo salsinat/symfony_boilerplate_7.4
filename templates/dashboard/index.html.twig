@@ -1,0 +1,256 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block page_title %}Dashboard Overview{% endblock %}
+
+{% block body %}
+<!-- Stats Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <!-- Revenue Card -->
+    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm p-6 border border-slate-100 dark:border-slate-700">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm font-medium text-slate-500 dark:text-slate-400">Chiffre d'affaires</p>
+                <p class="text-2xl font-bold text-slate-800 dark:text-white mt-1">{{ (total_revenue / 100)|number_format(2, ',', ' ') }} €</p>
+            </div>
+            <div class="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/30 rounded-xl flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-emerald-600 dark:text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Orders Card -->
+    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm p-6 border border-slate-100 dark:border-slate-700">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm font-medium text-slate-500 dark:text-slate-400">Commandes</p>
+                <p class="text-2xl font-bold text-slate-800 dark:text-white mt-1">{{ orders_count }}</p>
+            </div>
+            <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                </svg>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Products Card -->
+    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm p-6 border border-slate-100 dark:border-slate-700">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm font-medium text-slate-500 dark:text-slate-400">Produits</p>
+                <p class="text-2xl font-bold text-slate-800 dark:text-white mt-1">{{ products_count }}</p>
+            </div>
+            <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-xl flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-600 dark:text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                </svg>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Users Card -->
+    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm p-6 border border-slate-100 dark:border-slate-700">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm font-medium text-slate-500 dark:text-slate-400">Utilisateurs</p>
+                <p class="text-2xl font-bold text-slate-800 dark:text-white mt-1">{{ users_count }}</p>
+            </div>
+            <div class="w-12 h-12 bg-amber-100 dark:bg-amber-900/30 rounded-xl flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-amber-600 dark:text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Charts Row -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+    <!-- Orders Chart (Line) -->
+    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm p-6 border border-slate-100 dark:border-slate-700">
+        <h3 class="text-lg font-bold text-slate-800 dark:text-white mb-4">Commandes (7 derniers jours)</h3>
+        <canvas id="ordersChart" height="200"></canvas>
+    </div>
+    
+    <!-- Products by Type (Doughnut) -->
+    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm p-6 border border-slate-100 dark:border-slate-700">
+        <h3 class="text-lg font-bold text-slate-800 dark:text-white mb-4">Produits par type</h3>
+        <div class="flex items-center justify-center">
+            <canvas id="productsTypeChart" height="200"></canvas>
+        </div>
+    </div>
+</div>
+
+<!-- Second Charts Row -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+    <!-- Orders by Status (Pie) -->
+    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm p-6 border border-slate-100 dark:border-slate-700">
+        <h3 class="text-lg font-bold text-slate-800 dark:text-white mb-4">Statut commandes</h3>
+        <canvas id="ordersStatusChart" height="200"></canvas>
+    </div>
+    
+    <!-- Recent Orders -->
+    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm p-6 border border-slate-100 dark:border-slate-700 lg:col-span-2">
+        <h3 class="text-lg font-bold text-slate-800 dark:text-white mb-4">Commandes récentes</h3>
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead>
+                    <tr class="text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                        <th class="pb-3">ID</th>
+                        <th class="pb-3">Date</th>
+                        <th class="pb-3">Statut</th>
+                        <th class="pb-3 text-right">Total</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+                    {% for order in recent_orders %}
+                    <tr>
+                        <td class="py-3 text-sm font-medium text-slate-800 dark:text-slate-200">#{{ order.id }}</td>
+                        <td class="py-3 text-sm text-slate-600 dark:text-slate-400">{{ order.createdAt|date('d/m/Y H:i') }}</td>
+                        <td class="py-3">
+                            <span class="px-2 py-1 text-xs font-semibold rounded-full 
+                                {% if order.status == 'pending' %}bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400
+                                {% elseif order.status == 'completed' %}bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400
+                                {% elseif order.status == 'shipped' %}bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400
+                                {% else %}bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-300{% endif %}">
+                                {{ order.status }}
+                            </span>
+                        </td>
+                        <td class="py-3 text-sm font-medium text-slate-800 dark:text-slate-200 text-right">{{ (order.total / 100)|number_format(2, ',', ' ') }} €</td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="4" class="py-8 text-center text-slate-500 dark:text-slate-400">Aucune commande</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Low Stock Alert -->
+{% if low_stock_products|length > 0 %}
+<div class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-2xl p-6">
+    <h3 class="text-lg font-bold text-red-800 dark:text-red-300 mb-4 flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+        </svg>
+        Stock faible (< 5 unités)
+    </h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        {% for product in low_stock_products %}
+        <div class="bg-white dark:bg-slate-800 rounded-xl p-4 border border-red-100 dark:border-red-900">
+            <p class="font-semibold text-slate-800 dark:text-slate-200">{{ product.name }}</p>
+            <p class="text-sm text-red-600 dark:text-red-400 mt-1">Stock: {{ product.stock }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const isDark = document.documentElement.classList.contains('dark');
+    const textColor = isDark ? '#94a3b8' : '#64748b';
+    const gridColor = isDark ? '#334155' : '#e2e8f0';
+    
+    Chart.defaults.color = textColor;
+    Chart.defaults.borderColor = gridColor;
+    
+    // Orders per day chart (Line)
+    const ordersData = {{ orders_per_day|json_encode|raw }};
+    new Chart(document.getElementById('ordersChart'), {
+        type: 'line',
+        data: {
+            labels: Object.keys(ordersData).map(d => {
+                const date = new Date(d);
+                return date.toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric' });
+            }),
+            datasets: [{
+                label: 'Commandes',
+                data: Object.values(ordersData),
+                borderColor: '#6366f1',
+                backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                fill: true,
+                tension: 0.4,
+                pointBackgroundColor: '#6366f1',
+                pointBorderColor: '#fff',
+                pointBorderWidth: 2,
+                pointRadius: 5
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { stepSize: 1 }
+                }
+            }
+        }
+    });
+    
+    // Products by type chart (Doughnut)
+    const productsTypeData = {{ products_by_type|json_encode|raw }};
+    new Chart(document.getElementById('productsTypeChart'), {
+        type: 'doughnut',
+        data: {
+            labels: productsTypeData.map(d => d.type === 'physical' ? 'Physique' : 'Numérique'),
+            datasets: [{
+                data: productsTypeData.map(d => d.count),
+                backgroundColor: ['#8b5cf6', '#06b6d4'],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            cutout: '65%',
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+    
+    // Orders by status chart (Pie)
+    const ordersStatusData = {{ orders_by_status|json_encode|raw }};
+    const statusColors = {
+        'pending': '#f59e0b',
+        'processing': '#3b82f6',
+        'shipped': '#8b5cf6',
+        'completed': '#10b981',
+        'cancelled': '#ef4444'
+    };
+    new Chart(document.getElementById('ordersStatusChart'), {
+        type: 'pie',
+        data: {
+            labels: ordersStatusData.map(d => d.status),
+            datasets: [{
+                data: ordersStatusData.map(d => d.count),
+                backgroundColor: ordersStatusData.map(d => statusColors[d.status] || '#64748b'),
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+});
+</script>
+{% endblock %}

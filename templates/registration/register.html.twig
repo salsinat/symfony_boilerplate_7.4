@@ -1,0 +1,72 @@
+{% extends 'storefront/base.html.twig' %}
+
+{% block title %}Inscription - E-Shop{% endblock %}
+
+{% block body %}
+<div class="max-w-md mx-auto">
+    <div class="bg-white rounded-2xl shadow-xl border border-slate-100 p-8">
+        <div class="text-center mb-8">
+            <div class="w-16 h-16 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                </svg>
+            </div>
+            <h1 class="text-2xl font-bold text-slate-800">Créer un compte</h1>
+            <p class="text-slate-500 mt-2">Rejoignez E-Shop dès maintenant</p>
+        </div>
+
+        {{ form_start(registrationForm, {'attr': {'class': 'space-y-5'}}) }}
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    {{ form_label(registrationForm.firstname, null, {'label_attr': {'class': 'block text-sm font-semibold text-slate-700 mb-2'}}) }}
+                    {{ form_widget(registrationForm.firstname, {'attr': {'class': 'w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors', 'placeholder': 'Jean'}}) }}
+                    {{ form_errors(registrationForm.firstname) }}
+                </div>
+                <div>
+                    {{ form_label(registrationForm.lastname, null, {'label_attr': {'class': 'block text-sm font-semibold text-slate-700 mb-2'}}) }}
+                    {{ form_widget(registrationForm.lastname, {'attr': {'class': 'w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors', 'placeholder': 'Dupont'}}) }}
+                    {{ form_errors(registrationForm.lastname) }}
+                </div>
+            </div>
+
+            <div>
+                {{ form_label(registrationForm.email, null, {'label_attr': {'class': 'block text-sm font-semibold text-slate-700 mb-2'}}) }}
+                {{ form_widget(registrationForm.email, {'attr': {'class': 'w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors', 'placeholder': 'jean@exemple.com'}}) }}
+                {{ form_errors(registrationForm.email) }}
+            </div>
+
+            <div>
+                {{ form_label(registrationForm.plainPassword.first, null, {'label_attr': {'class': 'block text-sm font-semibold text-slate-700 mb-2'}}) }}
+                {{ form_widget(registrationForm.plainPassword.first, {'attr': {'class': 'w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors', 'placeholder': '••••••••'}}) }}
+                <p class="text-xs text-slate-500 mt-2">Min. 8 caractères avec majuscule, minuscule, chiffre et caractère spécial</p>
+                {{ form_errors(registrationForm.plainPassword.first) }}
+            </div>
+
+            <div>
+                {{ form_label(registrationForm.plainPassword.second, null, {'label_attr': {'class': 'block text-sm font-semibold text-slate-700 mb-2'}}) }}
+                {{ form_widget(registrationForm.plainPassword.second, {'attr': {'class': 'w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors', 'placeholder': '••••••••'}}) }}
+                {{ form_errors(registrationForm.plainPassword.second) }}
+            </div>
+
+            <div class="flex items-start gap-3">
+                {{ form_widget(registrationForm.agreeTerms, {'attr': {'class': 'w-5 h-5 text-indigo-600 border-slate-300 rounded focus:ring-indigo-500 mt-0.5'}}) }}
+                <label class="text-sm text-slate-600">
+                    J'accepte les <a href="#" class="text-indigo-600 hover:underline">conditions générales</a> et la <a href="#" class="text-indigo-600 hover:underline">politique de confidentialité</a>
+                </label>
+            </div>
+            {{ form_errors(registrationForm.agreeTerms) }}
+
+            <button type="submit" class="w-full py-3 px-6 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold rounded-xl shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 transition-all hover:-translate-y-0.5">
+                Créer mon compte
+            </button>
+        {{ form_end(registrationForm) }}
+
+        <div class="text-center mt-6 pt-6 border-t border-slate-200">
+            <p class="text-slate-500">
+                Déjà un compte ?
+                <a href="{{ path('app_login') }}" class="text-indigo-600 font-semibold hover:underline">Se connecter</a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

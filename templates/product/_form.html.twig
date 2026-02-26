@@ -1,0 +1,71 @@
+<div class="step-form" x-data="{ step: 1 }">
+    <!-- Step Indicators -->
+    <div class="mb-8 border-b border-gray-200">
+        <ul class="flex -mb-px">
+            <li class="mr-2">
+                <button type="button" class="inline-block p-4 border-b-2 rounded-t-lg"
+                        :class="step === 1 ? 'border-blue-600 text-blue-600 font-bold' : 'border-transparent hover:text-gray-600 hover:border-gray-300'"
+                        @click="step = 1">
+                    1. General Info
+                </button>
+            </li>
+            <li class="mr-2">
+                <button type="button" class="inline-block p-4 border-b-2 rounded-t-lg"
+                        :class="step === 2 ? 'border-blue-600 text-blue-600 font-bold' : 'border-transparent hover:text-gray-600 hover:border-gray-300'"
+                        @click="step = 2">
+                    2. Pricing & Stock
+                </button>
+            </li>
+        </ul>
+    </div>
+
+    {{ form_start(form, {'attr': {'class': 'space-y-6'}}) }}
+        
+        <!-- Step 1: General Info -->
+        <div x-show="step === 1">
+            <div class="grid grid-cols-1 gap-6">
+                <div>
+                   {{ form_row(form.name, {'attr': {'class': 'appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'}}) }}
+                </div>
+                 <div>
+                   {{ form_row(form.slug, {'attr': {'class': 'appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'}}) }}
+                </div>
+                 <div>
+                   {{ form_row(form.description, {'attr': {'class': 'appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline', 'rows': 5}}) }}
+                </div>
+            </div>
+            
+             <div class="flex items-center justify-end mt-6">
+                <button type="button" @click="step = 2" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    Next >
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 2: Pricing & Stock -->
+        <div x-show="step === 2" style="display: none;">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                   {{ form_row(form.price, {'attr': {'class': 'appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'}}) }}
+                   <p class="text-xs text-gray-500 mt-1">Price in cents (e.g., 1000 = 10.00€)</p>
+                </div>
+                 <div>
+                   {{ form_row(form.stock, {'attr': {'class': 'appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'}}) }}
+                </div>
+            </div>
+
+            <div class="flex items-center justify-between mt-6">
+                <button type="button" @click="step = 1" class="text-gray-600 hover:text-gray-900 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    < Back
+                </button>
+                <button class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    {{ button_label|default('Save Product') }}
+                </button>
+            </div>
+        </div>
+
+    {{ form_end(form) }}
+</div>
+
+<!-- Simple JS for tabs if Alpine is not present (as fallback) -->
+<script src="//unpkg.com/alpinejs" defer></script>

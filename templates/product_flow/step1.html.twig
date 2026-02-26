@@ -1,0 +1,88 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau Produit - Étape 1{% endblock %}
+{% block page_title %}Nouveau Produit{% endblock %}
+{% block page_subtitle %}Assistant de création multi-étapes{% endblock %}
+
+{% block body %}
+<div class="max-w-3xl mx-auto">
+    <!-- Step Indicator -->
+    <div class="mb-8">
+        <div class="flex items-center justify-center">
+            <div class="flex items-center">
+                <div class="w-10 h-10 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full flex items-center justify-center text-white font-bold shadow-lg shadow-blue-500/30">1</div>
+                <div class="w-20 h-1 bg-slate-200"></div>
+            </div>
+            <div class="flex items-center">
+                <div class="w-10 h-10 bg-slate-200 rounded-full flex items-center justify-center text-slate-400 font-bold">2</div>
+                <div class="w-20 h-1 bg-slate-200"></div>
+            </div>
+            <div class="flex items-center">
+                <div class="w-10 h-10 bg-slate-200 rounded-full flex items-center justify-center text-slate-400 font-bold">3</div>
+                <div class="w-20 h-1 bg-slate-200"></div>
+            </div>
+            <div>
+                <div class="w-10 h-10 bg-slate-200 rounded-full flex items-center justify-center text-slate-400 font-bold">4</div>
+            </div>
+        </div>
+        <div class="flex justify-center mt-4 space-x-12 text-xs">
+            <span class="text-blue-600 font-semibold">Type</span>
+            <span class="text-slate-400">Détails</span>
+            <span class="text-slate-400">Spécifiques</span>
+            <span class="text-slate-400">Confirmation</span>
+        </div>
+    </div>
+
+    <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-slate-200/50 overflow-hidden">
+        <div class="px-8 py-6 border-b border-slate-200/50 bg-gradient-to-r from-blue-50 to-indigo-50">
+            <h2 class="text-xl font-bold text-slate-800">Choisissez le type de produit</h2>
+            <p class="text-sm text-slate-500 mt-1">Cela déterminera les champs disponibles à l'étape suivante</p>
+        </div>
+
+        <div class="p-8">
+            {{ form_start(form, {'attr': {'class': 'space-y-6'}}) }}
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {% for child in form.type %}
+                        <label class="relative cursor-pointer group">
+                            {{ form_widget(child, {'attr': {'class': 'peer sr-only'}}) }}
+                            <div class="border-2 border-slate-200 rounded-2xl p-6 transition-all group-hover:border-blue-300 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:shadow-lg peer-checked:shadow-blue-500/10">
+                                <div class="flex items-center mb-4">
+                                    {% if child.vars.value == 'physical' %}
+                                        <div class="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-xl flex items-center justify-center text-white shadow-md mr-4">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                                            </svg>
+                                        </div>
+                                    {% else %}
+                                        <div class="w-12 h-12 bg-gradient-to-br from-violet-500 to-purple-500 rounded-xl flex items-center justify-center text-white shadow-md mr-4">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                            </svg>
+                                        </div>
+                                    {% endif %}
+                                    <div>
+                                        <span class="font-bold text-slate-800 text-lg">{{ child.vars.label }}</span>
+                                        <p class="text-sm text-slate-500">
+                                            {% if child.vars.value == 'physical' %}
+                                                Produit avec poids et livraison
+                                            {% else %}
+                                                Produit avec clé de licence
+                                            {% endif %}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </label>
+                    {% endfor %}
+                </div>
+                
+                <div class="flex justify-end pt-6 border-t border-slate-200">
+                    {{ form_widget(form.next, {'attr': {'class': 'inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-xl shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all hover:-translate-y-0.5'}}) }}
+                </div>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+{% endblock %}

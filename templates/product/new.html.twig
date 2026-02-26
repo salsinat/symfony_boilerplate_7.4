@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau Produit{% endblock %}
+{% block page_title %}Créer un Produit{% endblock %}
+{% block page_subtitle %}Ajouter au catalogue{% endblock %}
+
+{% block body %}
+<div class="max-w-3xl mx-auto">
+    <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-slate-200/50 overflow-hidden">
+        <div class="px-8 py-6 border-b border-slate-200/50 bg-gradient-to-r from-emerald-50 to-teal-50">
+            <h2 class="text-xl font-bold text-slate-800">Informations du produit</h2>
+            <p class="text-sm text-slate-500 mt-1">Formulaire rapide - Pour plus d'options, utilisez le <a href="{{ path('product_flow_start') }}" class="text-emerald-600 hover:underline">formulaire multi-étapes</a></p>
+        </div>
+        
+        <div class="p-8">
+            {{ include('product/_form.html.twig', {'button_label': 'Créer le produit'}) }}
+        </div>
+    </div>
+</div>
+{% endblock %}
